@@ -4,7 +4,10 @@
 CREATE TABLE Patient (
     ID_patient INT PRIMARY KEY,
     Nom VARCHAR(255),
-    Prenom VARCHAR(255)
+    Prenom VARCHAR(255),
+    DateNaissance DATE,
+    Adresse VARCHAR(255),
+    NumeroTelephone VARCHAR(20)
     -- Ajoutez d'autres colonnes pour les détails du patient si nécessaire
 );
 
@@ -39,4 +42,3 @@ CREATE TABLE RendezVous (
 );
 
 -- Fin du script
-
