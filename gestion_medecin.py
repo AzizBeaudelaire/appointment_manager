@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime, timedelta
 
 class GestionMedecin:
-    def __init__(self, fichier_db='medecins.db'):
+    def __init__(self, fichier_db='rendezvous.db'):  # Modifié le nom du fichier_db ici
         self.fichier_db = fichier_db
 
     def __enter__(self):
@@ -80,7 +80,7 @@ class GestionMedecin:
             plage_horaire = debut_journee
 
             while plage_horaire <= fin_journee:
-                print(f"{plage_horaire.strftime('%H:%M')} - {plage_horaire + temps_entre_rdv.strftime('%H:%M')}")
+                print(f"{plage_horaire.strftime('%H:%M')} - {(plage_horaire + temps_entre_rdv).strftime('%H:%M')}")
                 plage_horaire += temps_entre_rdv
         else:
             print(f"Aucun médecin trouvé avec l'ID {id_medecin}.")

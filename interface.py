@@ -7,8 +7,8 @@ from gestion_rdv import GestionRendezVous
 class InterfaceUtilisateur:
     def __init__(self):
         self.gestion_rdv = GestionRendezVous(fichier_db='rendezvous.db')
-        self.gestion_medecin = GestionMedecin(fichier_db='medecins.db')
-        self.gestion_secretaire = GestionSecretaire(fichier_db='secretaires.db')
+        self.gestion_medecin = GestionMedecin(fichier_db='rendezvous.db')
+        self.gestion_secretaire = GestionSecretaire(fichier_db='rendezvous.db')
 
     def menu_principal(self):
         try:
@@ -59,7 +59,8 @@ class InterfaceUtilisateur:
             choix_rdv = input("Choisissez une option (1-5): ")
 
             if choix_rdv == '1':
-                self.gestion_rdv.lister_rendezvous()
+                date_jour = input("Entrez la date du jour (format YYYY-MM-DD): ")
+                self.gestion_rdv.lister_rendezvous(date_jour)
             elif choix_rdv == '2':
                 self.menu_ajouter_rdv()
             elif choix_rdv == '3':

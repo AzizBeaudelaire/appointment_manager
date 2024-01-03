@@ -1,8 +1,7 @@
 import sqlite3
-from datetime import datetime, timedelta
 
 class GestionSecretaire:
-    def __init__(self, fichier_db='secretaires.db'):
+    def __init__(self, fichier_db='rendezvous.db'):  # Modifié le nom du fichier_db ici
         self.fichier_db = fichier_db
 
     def __enter__(self):
