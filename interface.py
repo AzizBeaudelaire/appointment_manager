@@ -3,9 +3,18 @@ from gestion_rdv import GestionRendezVous
 
 class InterfaceUtilisateur:
     def __init__(self):
-        self.gestion_rdv = GestionRendezVous()
+        self.gestion_rdv = GestionRendezVous(fichier_sql='gestion.sql')
 
     def menu_principal(self):
+        try:
+            self.gestion_rdv.creer_tables()
+        except FileNotFoundError as fnfe:
+            print("\033[91mErreur : Fichier introuvable - {}\033[0m".format(str(fnfe)))
+            sys.exit(1)
+        except Exception as e:
+            print("\033[91mErreur lors de l'exécution du programme : {}\033[0m".format(str(e)))
+            sys.exit(1)
+
         while True:
             os.system('clear')  # Utilisez 'cls' au lieu de 'clear' si vous êtes sur Windows
 
@@ -21,11 +30,11 @@ class InterfaceUtilisateur:
             if choix == '1':
                 self.gestion_rdv.lister_rendezvous()
             elif choix == '2':
-                self.gestion_rdv.prendre_rdv()
+                self.menu_ajouter_rdv()
             elif choix == '3':
-                self.gestion_rdv.modifier_rendezvous()
+                self.menu_modifier_rdv()
             elif choix == '4':
-                self.gestion_rdv.supprimer_rendezvous()
+                self.menu_supprimer_rdv()
             elif choix == '5':
                 print("Au revoir!")
                 break

@@ -7,7 +7,8 @@ def main():
             print("\033[91mErreur : Option pas encore opérationnelle\033[0m")
             sys.exit(1)
         
-        interface = InterfaceUtilisateur()
+        # Modifiez cette ligne
+        interface = InterfaceUtilisateur(fichier_db='rendez_vousdb')
         interface.menu_principal()
     except FileNotFoundError as fnfe:
         print("\033[91mErreur : Fichier introuvable - {}\033[0m".format(str(fnfe)))
