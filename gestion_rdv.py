@@ -14,6 +14,10 @@ class GestionRendezVous:
         self.conn.close()
 
     def creer_tables(self):
+        if not hasattr(self, 'conn') or not self.conn:
+            self.conn = sqlite3.connect(self.fichier_db)
+            self.c = self.conn.cursor()
+    
         with self.conn:
             self.c.execute('''
                 CREATE TABLE IF NOT EXISTS Patient (

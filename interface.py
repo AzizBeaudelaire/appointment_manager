@@ -1,9 +1,9 @@
-import os
+import os, sys
 from gestion_rdv import GestionRendezVous
 
 class InterfaceUtilisateur:
     def __init__(self):
-        self.gestion_rdv = GestionRendezVous(fichier_sql='gestion.sql')
+        self.gestion_rdv = GestionRendezVous(fichier_db='rendezvous.db')
 
     def menu_principal(self):
         try:
