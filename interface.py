@@ -28,7 +28,9 @@ class InterfaceUtilisateur:
             choix = input("Choisissez une option (1-5): ")
 
             if choix == '1':
-                self.gestion_rdv.lister_rendezvous()
+                date_jour = input("Entrez la date pour afficher les RDV (format YYYY-MM-DD): ")
+                self.gestion_rdv.lister_rendezvous(date_jour)
+                # self.gestion_rdv.lister_rendezvous()
             elif choix == '2':
                 self.menu_ajouter_rdv()
             elif choix == '3':
