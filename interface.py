@@ -1,17 +1,20 @@
 import os
 import sys
 from gestion_medecin import GestionMedecin
+from gestion_secretaire import GestionSecretaire
 from gestion_rdv import GestionRendezVous
 
 class InterfaceUtilisateur:
     def __init__(self):
         self.gestion_rdv = GestionRendezVous(fichier_db='rendezvous.db')
         self.gestion_medecin = GestionMedecin(fichier_db='medecins.db')
+        self.gestion_secretaire = GestionSecretaire(fichier_db='secretaires.db')
 
     def menu_principal(self):
         try:
             self.gestion_rdv.creer_tables()
             self.gestion_medecin.creer_tables()
+            self.gestion_secretaire.creer_tables()  # Création des tables pour la gestion des secrétaires
         except FileNotFoundError as fnfe:
             print("\033[91mErreur : Fichier introuvable - {}\033[0m".format(str(fnfe)))
             sys.exit(1)
@@ -20,20 +23,23 @@ class InterfaceUtilisateur:
             sys.exit(1)
 
         while True:
-            os.system('clear')  # Utilisez 'cls' au lieu de 'clear' si vous êtes sur Windows
+            #os.system('clear')  # Utilisez 'cls' au lieu de 'clear' si vous êtes sur Windows
 
             print("\nMenu Principal:")
             print("1. Gestion des RDV")
             print("2. Gestion des Médecins")
-            print("3. Quitter")
+            print("3. Gestion des Secrétaires")
+            print("4. Quitter")
 
-            choix = input("Choisissez une option (1-3): ")
+            choix = input("Choisissez une option (1-4): ")
 
             if choix == '1':
                 self.menu_gestion_rdv()
             elif choix == '2':
                 self.menu_gestion_medecins()
             elif choix == '3':
+                self.menu_gestion_secretaires()
+            elif choix == '4':
                 print("Au revoir!")
                 break
             else:
@@ -41,7 +47,7 @@ class InterfaceUtilisateur:
 
     def menu_gestion_rdv(self):
         while True:
-            os.system('clear')  # Retiré pour ne pas effacer le terminal pendant l'affichage des réponses
+            #os.system('clear')  # Retiré pour ne pas effacer le terminal pendant l'affichage des réponses
 
             print("\nGestion des RDV:")
             print("1. Afficher la liste de RDV")
@@ -67,7 +73,7 @@ class InterfaceUtilisateur:
 
     def menu_gestion_medecins(self):
         while True:
-            os.system('clear')  # Retiré pour ne pas effacer le terminal pendant l'affichage des réponses
+            #os.system('clear')  # Retiré pour ne pas effacer le terminal pendant l'affichage des réponses
 
             print("\nGestion de Médecins:")
             print("1. Ajouter un médecin")
@@ -90,6 +96,41 @@ class InterfaceUtilisateur:
                 break
             else:
                 print("Option invalide. Veuillez choisir une option valide.")
+
+    def menu_gestion_secretaires(self):  # Nouveau menu pour la gestion des secrétaires
+        while True:
+            #os.system('clear')
+
+            print("\nGestion des Secrétaires:")
+            print("1. Ajouter une secrétaire")
+            print("2. Supprimer une secrétaire")
+            print("3. Lister les secrétaires")
+            print("4. Retour au menu principal")
+
+            choix_secretaire = input("Choisissez une option (1-4): ")
+
+            if choix_secretaire == '1':
+                self.menu_ajouter_secretaire()
+            elif choix_secretaire == '2':
+                self.menu_supprimer_secretaire()
+            elif choix_secretaire == '3':
+                self.gestion_secretaire.lister_secretaires()
+            elif choix_secretaire == '4':
+                break
+            else:
+                print("Option invalide. Veuillez choisir une option valide.")
+
+
+    def menu_ajouter_secretaire(self):
+        prenom_secretaire = input("Entrez le prénom de la secrétaire: ")
+        nom_secretaire = input("Entrez le nom de la secrétaire: ")
+
+        self.gestion_secretaire.ajouter_secretaire(prenom_secretaire, nom_secretaire)
+
+    def menu_supprimer_secretaire(self):
+        id_secretaire = input("Entrez l'ID de la secrétaire à supprimer: ")
+
+        self.gestion_secretaire.supprimer_secretaire(id_secretaire)
 
     def menu_ajouter_medecin(self):
         prenom_medecin = input("Entrez le prénom du médecin: ")
