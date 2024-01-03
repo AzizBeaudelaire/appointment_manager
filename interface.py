@@ -64,8 +64,10 @@ class InterfaceUtilisateur:
         prenom_patient = input("Entrez le prénom du patient: ")
         date_rdv = input("Entrez la date du rendez-vous à modifier (format YYYY-MM-DD): ")
         heure_rdv = input("Entrez l'heure du rendez-vous à modifier (format HH:MM): ")
+        nouvelle_date = input("Entrez la nouvelle date du rendez-vous (format YYYY-MM-DD): ")
+        nouvelle_heure = input("Entrez la nouvelle heure du rendez-vous (format HH:MM): ")
 
-        self.gestion_rdv.modifier_rendezvous(nom_patient, prenom_patient, date_rdv, heure_rdv)
+        self.gestion_rdv.modifier_rendezvous(nom_patient, prenom_patient, date_rdv, heure_rdv, nouvelle_date, nouvelle_heure)
 
     def menu_supprimer_rdv(self):
         nom_patient = input("Entrez le nom du patient: ")
