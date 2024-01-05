@@ -1,0 +1,39 @@
+# Gestionnaire de Rendez-vous
+
+## Description
+
+La société SocioDocs, un organisme de santé, a décidé d'étendre ses services en mettant en place un système de rendez-vous en ligne pour les médecins travaillant dans leurs cabinets. Ce projet vise à répondre à cette demande en créant une base de données relationnelle robuste pour gérer efficacement les rendez-vous.
+
+## Fonctionnalités
+
+- Enregistrement des rendez-vous avec des informations telles que la date, l'heure, le patient, le médecin et la secrétaire.
+- Gestion des créneaux horaires disponibles.
+- Modification et suppression des rendez-vous existants.
+- Affichage des rendez-vous programmés pour une date donnée.
+
+## Utilisation
+
+1. Installez les dépendances : `pip install -r requirements.txt`
+2. Créez la base de données : `python create_db.py`
+3. Exécutez le programme : `python main.py`
+
+## Structure du Projet
+
+- `main.py` : Point d'entrée du programme.
+- `create_db.py` : Script pour créer les tables de la base de données.
+- `gestion_rdv.py` : Module contenant la classe `GestionRendezVous` pour gérer les rendez-vous.
+- `gestion_medecin.py` : Module contenant la classe `GestionMedecin` pour gérer les médecins.
+- `gestion_secretaire.py` : Module contenant la classe `GestionSecretaire` pour gérer les secrétaires.
+- `interface.py` : Module pour l'interface utilisateur (à détailler si nécessaire).
+- `rendezvous.db` : Fichier de base de données.
+
+## Contributions
+
+Les contributions sont les bienvenues ! N'hésitez pas à soumettre des pull requests pour améliorer le projet.
+
+## Auteurs
+
+- Ibrahima
+- AzizBeaudelaire
+
+
