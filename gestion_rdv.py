@@ -30,7 +30,7 @@ class GestionRendezVous:
                         NumeroTelephone TEXT
                     )
                 ''')
-                print("Table Patient créée avec succès.")
+                # print("Table Patient créée avec succès.")
 
                 self.c.execute('''
                     CREATE TABLE IF NOT EXISTS Medecin (
@@ -39,7 +39,7 @@ class GestionRendezVous:
                         Prenom TEXT
                     )
                 ''')
-                print("Table medecin créée avec succès.")
+                # print("Table medecin créée avec succès.")
 
                 self.c.execute('''
                     CREATE TABLE IF NOT EXISTS Secretaire (
@@ -48,7 +48,7 @@ class GestionRendezVous:
                         Prenom TEXT
                     )
                 ''')
-                print("Table secretaire créée avec succès.")
+                # print("Table secretaire créée avec succès.")
 
                 self.c.execute('''
                     CREATE TABLE IF NOT EXISTS CreneauHoraire (
@@ -57,7 +57,7 @@ class GestionRendezVous:
                         FinCreneau TIME
                     )
                 ''')
-                print("Table creneau créée avec succès.")
+                # print("Table creneau créée avec succès.")
 
                 self.c.execute('''
                     CREATE TABLE IF NOT EXISTS RendezVous (
@@ -72,7 +72,7 @@ class GestionRendezVous:
                         FOREIGN KEY (ID_secretaire) REFERENCES Secretaire(ID_secretaire)
                     )
                 ''')
-                print("Table rdv créée avec succès.")
+                # print("Table rdv créée avec succès.")
         else:
             print("La connexion à la base de données n'est pas établie.")
 
@@ -168,8 +168,7 @@ class GestionRendezVous:
         with self.conn:
             # Vérifier que l'heure est entre 8h et 20h
             heure_rdv_datetime = datetime.strptime(nouvelle_heure, "%H:%M")
-            if heure_rdv_datetime < datetime.strptime("08:00", "%H:%M") or heure_rdv_datetime >= datetime.strptime(
-                    "20:00", "%H:%M"):
+            if heure_rdv_datetime < datetime.strptime("08:00", "%H:%M") or heure_rdv_datetime >= datetime.strptime("20:00", "%H:%M"):
                 print("Vous ne pouvez modifier de rendez-vous qu'entre 8h et 20h.")
                 return
 
@@ -186,44 +185,41 @@ class GestionRendezVous:
 
             patient_id = patient_info[0]
 
-            # Vérifier si le nouveau créneau est disponible
-            debut_rdv = datetime.strptime(f"{nouvelle_date} {nouvelle_heure}", "%Y-%m-%d %H:%M")
-            fin_rdv = debut_rdv + timedelta(minutes=30)
+            # Mettre à jour le rendez-vous sans vérifier la disponibilité
+            self.c.execute('''
+                UPDATE RendezVous
+                SET DateRendezVous = ?, HeureRendezVous = ?
+                WHERE ID_patient = ? AND DateRendezVous = ? AND HeureRendezVous = ?
+            ''', (nouvelle_date, nouvelle_heure, patient_id, date_rdv, heure_rdv))
 
-            if self.creneau_disponible(debut_rdv, fin_rdv):
-                # Mettre à jour le rendez-vous
-                self.c.execute('''
-                    UPDATE RendezVous
-                    SET DateRendezVous = ?, HeureRendezVous = ?
-                    WHERE ID_patient = ? AND DateRendezVous = ? AND HeureRendezVous = ?
-                ''', (nouvelle_date, nouvelle_heure, patient_id, date_rdv, heure_rdv))
-
-                print("Rendez-vous modifié avec succès.")
-            else:
-                print("Créneau non disponible. Choisissez un autre créneau.")
-
+        print("Rendez-vous modifié avec succès.")
     # Modifiez la signature de la méthode supprimer_rendezvous
     def supprimer_rendezvous(self, nom_patient, prenom_patient, date_rdv, heure_rdv):
         with self.conn:
-            # Récupérer les informations du rendez-vous avant la suppression
+            # Récupérer l'ID du patient
+            self.c.execute('''
+                SELECT ID_patient FROM Patient
+                WHERE Nom = ? AND Prenom = ?
+            ''', (nom_patient, prenom_patient))
+            patient_info = self.c.fetchone()
+
+            if not patient_info:
+                print("Patient introuvable.")
+                return
+
+            patient_id = patient_info[0]
+
+            # Récupérer l'ID du rendez-vous
             self.c.execute('''
                 SELECT ID_rendezvous
                 FROM RendezVous
-                WHERE ID_patient = (
-                    SELECT ID_patient
-                    FROM Patient
-                    WHERE Nom = ? AND Prenom = ?
-                ) AND DateRendezVous = ? AND HeureRendezVous = ?
-            ''', (nom_patient, prenom_patient, date_rdv, heure_rdv))
+                WHERE ID_patient = ? AND DateRendezVous = ? AND HeureRendezVous = ?
+            ''', (patient_id, date_rdv, heure_rdv))
 
             rendezvous_info = self.c.fetchone()
 
             if rendezvous_info:
                 id_rendezvous = rendezvous_info[0]
-                date_rdv, heure_rdv = rendezvous_info
-
-                debut_rdv = datetime.strptime(f"{date_rdv} {heure_rdv}", "%Y-%m-%d %H:%M")
-                fin_rdv = debut_rdv + timedelta(minutes=30)
 
                 # Supprimer le rendez-vous
                 self.c.execute('''
@@ -234,3 +230,4 @@ class GestionRendezVous:
                 print("Rendez-vous supprimé avec succès.")
             else:
                 print("Rendez-vous introuvable.")
+
